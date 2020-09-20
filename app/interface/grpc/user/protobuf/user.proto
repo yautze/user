@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package user;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.goproto_unkeyed_all) = false;
+option (gogoproto.goproto_unrecognized_all) = false;
+option (gogoproto.goproto_sizecache_all) = false;
+
+service UserService {
+    rpc Create(User) returns (Empty);
+    rpc GetByID(GetByIDRequest) returns (User);
+    rpc GetByFBIDAndPassword(GetByFBIDAndPasswordRequest) returns (User);
+    rpc UpdateInfo(UpdateInfoRequest) returns (Empty);
+    rpc UpdatePassword(UpdatePasswordRequest) returns (Empty);
+    rpc DeleteByID(DeleteByIDRequest) returns (Empty);
+}
+
+message User {
+    string id = 1;
+    string fbid = 2;
+    string password = 3;
+    string key = 4;
+    Info info = 5;
+    int64 create_at = 7;
+    int64 update_at = 8;
+    int64 login_at = 9;
+}
+
+message Info {
+    string name = 1;
+    string phone = 2;
+}
+
+message GetByIDRequest {
+    string id = 1;
+}
+
+message GetByFBIDAndPasswordRequest {
+    string fbid = 1;
+    string password = 2;
+}
+
+message  UpdateInfoRequest {
+    string id = 1;
+    Info info = 2;
+}
+
+message UpdatePasswordRequest {
+    string id = 1;
+    string fbid = 2;
+    string password = 3;
+}
+
+message DeleteByIDRequest {
+    string id = 1;
+}
+
+message Empty {}
