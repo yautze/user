@@ -8,3 +8,5 @@
 * consul - 服務註冊
 * gRPC
 * mongoDB
+
+### 啟動方式 : go run main.go server -p {start server port} -c {consul address}
