@@ -18,11 +18,11 @@ func userToModel(in *pb.User) (*model.User, error) {
 		ID:       objectID,
 		FBID:     in.GetFbid(),
 		Password: in.GetPassword(),
-		Key: in.GetKey(),
-		Info: *infoToModel(in.GetInfo()),
+		Key:      in.GetKey(),
+		Info:     *infoToModel(in.GetInfo()),
 		CreateAt: in.GetCreateAt(),
 		UpdateAt: in.GetUpdateAt(),
-		LoginAt: in.GetLoginAt(),
+		LoginAt:  in.GetLoginAt(),
 	}, nil
 }
 
@@ -35,12 +35,12 @@ func infoToModel(in *pb.Info) *model.Info {
 
 func userToPb(in *model.User) *pb.User {
 	return &pb.User{
-		Id: in.ID.Hex(),
-		Fbid: in.FBID,
-		Info: infoToPb(&in.Info),
+		Id:       in.ID.Hex(),
+		Fbid:     in.FBID,
+		Info:     infoToPb(&in.Info),
 		CreateAt: in.CreateAt,
 		UpdateAt: in.UpdateAt,
-		LoginAt: in.LoginAt,
+		LoginAt:  in.LoginAt,
 	}
 }
 

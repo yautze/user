@@ -103,13 +103,13 @@ func (u *userUsecase) UpdateInfo(id primitive.ObjectID, info *model.Info) error 
 
 	update := bson.M{
 		"$set": bson.M{
-			"info.name":     info.Name,
-			"info.phone":    info.Phone,
-			"udpateAt": time.Now().Unix(),
+			"info.name":  info.Name,
+			"info.phone": info.Phone,
+			"udpateAt":   time.Now().Unix(),
 		},
 	}
 
-	// call  userRepository - DeleteByID
+	// call  userRepository - Update
 	if err := u.userRepository.Update(ctx, filter, update); err != nil {
 		return err
 	}
@@ -117,7 +117,7 @@ func (u *userUsecase) UpdateInfo(id primitive.ObjectID, info *model.Info) error 
 	return nil
 }
 
-// UpdatePassword - 
+// UpdatePassword -
 func (u *userUsecase) UpdatePassword(id primitive.ObjectID, fbID, password string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
@@ -132,7 +132,7 @@ func (u *userUsecase) UpdatePassword(id primitive.ObjectID, fbID, password strin
 		return st.ErrorDatabaseUpdateFailed
 	}
 
-	key := u.userService.HashKey(fbID, password);
+	key := u.userService.HashKey(fbID, password)
 
 	filter := bson.M{
 		"_id": id,
@@ -140,7 +140,7 @@ func (u *userUsecase) UpdatePassword(id primitive.ObjectID, fbID, password strin
 
 	update := bson.M{
 		"$set": bson.M{
-			"key":     key,
+			"key":      key,
 			"udpateAt": time.Now().Unix(),
 		},
 	}
