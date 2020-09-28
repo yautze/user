@@ -13,7 +13,7 @@ func userToModel(in *pb.User) (*model.User, error) {
 	if err != nil {
 		return nil, st.ErrorInvalidParameter
 	}
-
+	
 	return &model.User{
 		ID:       objectID,
 		FBID:     in.GetFbid(),

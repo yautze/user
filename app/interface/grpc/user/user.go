@@ -19,7 +19,7 @@ type service struct {
 	userUsecase usecase.UserUsecase
 }
 
-// New - 
+// New -
 func New(userUsecase usecase.UserUsecase) *service {
 	return &service{
 		userUsecase: userUsecase,
@@ -41,14 +41,14 @@ func (s service) Create(ctx context.Context, in *pb.User) (*pb.Empty, error) {
 
 	// call userUsecase Create
 	if err := s.userUsecase.Create(data); err != nil {
-		return nil, st.ErrorDatabaseCreateFailed	
+		return nil, st.ErrorDatabaseCreateFailed
 	}
 
 	return &pb.Empty{}, nil
 }
 
-// GetByID - 
-func (s *service) GetByID(ctx context.Context, in *pb.GetByIDRequest) (*pb.User, error){
+// GetByID -
+func (s *service) GetByID(ctx context.Context, in *pb.GetByIDRequest) (*pb.User, error) {
 	// check id to objectID
 	objectID, err := primitive.ObjectIDFromHex(in.GetId())
 	if err != nil {
@@ -58,30 +58,30 @@ func (s *service) GetByID(ctx context.Context, in *pb.GetByIDRequest) (*pb.User,
 	// call userUsecase GetByID
 	user, err := s.userUsecase.GetByID(objectID)
 	if err != nil {
-		return nil, st.ErrorDataNotFound	
+		return nil, st.ErrorDataNotFound
 	}
 
 	return userToPb(user), nil
 }
 
-// GetByFBIDAndPassword - 
-func (s *service) GetByFBIDAndPassword(ctx context.Context, in *pb.GetByFBIDAndPasswordRequest) (*pb.User, error){
+// GetByFBIDAndPassword -
+func (s *service) GetByFBIDAndPassword(ctx context.Context, in *pb.GetByFBIDAndPasswordRequest) (*pb.User, error) {
 	// check fbID & password not empty
 	if in.GetFbid() == "" || in.GetPassword() == "" {
 		return nil, st.ErrorInvalidParameter
 	}
 
 	// call userUsecase GetByFBIDAndPassword
-	user, err := s.userUsecase.GetByFBIDAndPassword(in.GetFbid(),in.GetPassword())
+	user, err := s.userUsecase.GetByFBIDAndPassword(in.GetFbid(), in.GetPassword())
 	if err != nil {
-		return nil, st.ErrorDataNotFound	
+		return nil, st.ErrorDataNotFound
 	}
 
 	return userToPb(user), nil
 }
 
-// UpdateInfo - 
-func (s *service) UpdateInfo(ctx context.Context, in *pb.UpdateInfoRequest) (*pb.Empty, error){
+// UpdateInfo -
+func (s *service) UpdateInfo(ctx context.Context, in *pb.UpdateInfoRequest) (*pb.Empty, error) {
 	// check id to objectID
 	objectID, err := primitive.ObjectIDFromHex(in.GetId())
 	if err != nil {
@@ -90,14 +90,14 @@ func (s *service) UpdateInfo(ctx context.Context, in *pb.UpdateInfoRequest) (*pb
 
 	// call userUsecase UpdateInfo
 	if err := s.userUsecase.UpdateInfo(objectID, infoToModel(in.GetInfo())); err != nil {
-		return nil, st.ErrorDataNotFound	
+		return nil, st.ErrorDataNotFound
 	}
 
 	return &pb.Empty{}, nil
 }
 
-// UpdatePassword - 
-func (s *service) UpdatePassword(ctx context.Context, in *pb.UpdatePasswordRequest) (*pb.Empty, error){
+// UpdatePassword -
+func (s *service) UpdatePassword(ctx context.Context, in *pb.UpdatePasswordRequest) (*pb.Empty, error) {
 	// check id to objectID
 	objectID, err := primitive.ObjectIDFromHex(in.GetId())
 	if err != nil {
@@ -106,14 +106,14 @@ func (s *service) UpdatePassword(ctx context.Context, in *pb.UpdatePasswordReque
 
 	// call userUsecase UpdatePassword
 	if err := s.userUsecase.UpdatePassword(objectID, in.GetFbid(), in.GetPassword()); err != nil {
-		return nil, st.ErrorDataNotFound	
+		return nil, st.ErrorDataNotFound
 	}
 
 	return &pb.Empty{}, nil
 }
 
-// DeleteByID - 
-func (s *service) DeleteByID(ctx context.Context, in *pb.DeleteByIDRequest) (*pb.Empty, error){
+// DeleteByID -
+func (s *service) DeleteByID(ctx context.Context, in *pb.DeleteByIDRequest) (*pb.Empty, error) {
 	// check id to objectID
 	objectID, err := primitive.ObjectIDFromHex(in.GetId())
 	if err != nil {
@@ -122,7 +122,7 @@ func (s *service) DeleteByID(ctx context.Context, in *pb.DeleteByIDRequest) (*pb
 
 	// call userUsecase UpdateInfo
 	if err := s.userUsecase.DeleteByID(objectID); err != nil {
-		return nil, st.ErrorDataNotFound	
+		return nil, st.ErrorDataNotFound
 	}
 
 	return &pb.Empty{}, nil

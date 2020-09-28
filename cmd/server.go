@@ -9,12 +9,12 @@ import (
 	"user/config"
 	"user/registry"
 
-	"github.com/yautze/tools/network"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_logrus "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	"github.com/spf13/cobra"
 	"github.com/yautze/tools/logger"
+	"github.com/yautze/tools/network"
 	"github.com/yautze/tools/srv"
 	"google.golang.org/grpc"
 )
@@ -36,6 +36,8 @@ func init() {
 
 func start() {
 	config.Setup()
+
+	container, _ := registry.New()
 
 	l := logger.WithField("service", config.APP)
 
@@ -76,11 +78,10 @@ func start() {
 		}),
 	)
 
-	r := registry.New()
 	grpc_server.Apply(
 		server,
 		grpc_server.New(
-			r["user-usecase"].(usecase.UserUsecase),
+			container.Resolve("user-usecase").(usecase.UserUsecase),
 		),
 	)
 	if err := s.Run(); err != nil {
